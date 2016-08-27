@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="/static/main.css" />
+
+    <title>Udacity Blog</title>
+</head>
+
+<body>
+
+    <a href="/signup" class="menu">SIGN UP</a>
+    <a href="/login" class="menu">LOG IN</a>
+    <a href="/logout" class="menu">LOG OUT</a>
+
+    <br>
+    <br>
+
+    {% if username_str %}
+  	    <div class="username">Hello, {{username_str}}</div>
+    {% endif %}
+
+    <a href="/blog" class="main-title">
+        Udacity Blog
+    </a>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>
+

@@ -1,0 +1,37 @@
+<div class="post">
+    <div class="post-heading">
+        <a href="/blog/post/{{p.key().id()}}" class="post-title">
+            {{p.subject}}
+        </a>
+
+        <div class="post-owner"> ({{p.owner}})</div>
+
+        <div class="post-date">
+            {{p.created.strftime("%b %d, %Y")}}
+        </div>
+    </div>
+
+    {% if username_str == p.owner %}
+        <a href="/blog/editpost/{{p.key().id()}}" class="post-content">
+            {{p._render_text | safe}}
+        </a>
+        <br>
+        <a href="/blog/deletepost/{{p.key().id()}}" class = "delete">
+            Delete post ({{ p.likes }} likes)
+        </a>
+    {% elif perma %}
+        <div class="post-content">
+            {{p._render_text | safe}}
+        </div>
+        <br>
+        {% if p.liked_by(username_str) %}
+            <a href="/blog/unlike/{{ p.key().id() }}" class="delete">Unlike ({{ p.likes }})</a>
+        {% else %}
+            <a href="/blog/like/{{ p.key().id() }}" class="delete">Like ({{ p.likes }})</a>
+        {% endif %}
+    {% else %}
+        <div class="post-content">
+            {{p._render_text | safe}}
+        </div>
+    {% endif %}
+</div>

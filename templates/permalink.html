@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {{post.render(username_str = username_str, perma = True) | safe}}
+    {% if comments %}
+        {% for c in comments %}
+            <br>
+            <div class="comment-heading">
+                <div class="comment-title">{{ c.owner }} says:</div>
+                <div class="comment-date">
+                    {{ c.created.strftime("%b %d, %Y") }}
+                </div>
+            </div>
+            {% if username_str == c.owner %}
+                <a href="/blog/editcomment/{{ c.key().id() }}" class="comment-content">{{ c.content }}</a>
+                <br>
+                <a href="/blog/deletecomment/{{ c.key().id() }}" class="delete">Delete comment</a>
+            {% else %}
+                <div class="comment-content">{{ c.content }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <br>
+    <a href="/blog/newcomment/{{post.key().id()}}" class="add-comment">
+  	    Add Comment
+    </a>
+{% endblock %}

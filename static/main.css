@@ -1,0 +1,151 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #333;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+}
+
+label {
+  display: block;
+  font-size: 20px;
+}
+
+label + label {
+    margin-top: 20px;
+}
+
+input[type=text] {
+    width: 500px;
+    font-size: 20px;
+    padding: 2px;
+    font-family: monospace;
+}
+
+textarea {
+  width: 500px;
+  height: 400px;
+  font-size: 17px;
+  font-family: monospace;
+}
+
+input[type=submit] {
+  font-size: 24px;
+}
+
+.main-title {
+    display: block;
+    color: #222;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+
+.post + .post {
+    margin-top: 15px;
+}
+
+.post-heading {
+    position: relative;
+    border-bottom: 3px solid #666;
+}
+
+.comment-heading {
+    position: relative;
+    border-bottom: 2px solid #999;
+}
+
+.post-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #222;
+    display: inline-block;
+}
+
+.comment-title {
+    font-size: 18px;
+    color: #222;
+}
+
+.post-owner {
+    font-size: 24px;
+    text-decoration: none;
+    color: #999;
+    position: relative;
+    left: 0px;
+    display: inline-block;
+}
+
+.post-date {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+}
+
+.comment-date {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+    font-size: 10px;
+}
+
+.post-content {
+    margin-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    color: #222;
+    text-decoration: none;
+}
+
+.comment-content {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: #222;
+    text-decoration: none;
+}
+
+.add-comment {
+    text-decoration: none;
+    color: darkslateblue;
+}
+
+.delete {
+    text-decoration: none;
+    color: #888;
+}
+
+.username {
+    text-align: right;
+    font-size: 16px;
+    text-decoration: none;
+    color: #222;
+}
+
+.menu {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #222;
+    display: inline-block;
+    border: 2px;
+    width: 33%;
+}
