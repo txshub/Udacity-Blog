@@ -13,7 +13,7 @@ from google.appengine.ext import db
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_dir),
-     autoescape=True)
+    autoescape=True)
 
 secret = 'somereallyrandomtext'
 
@@ -75,7 +75,7 @@ def render_post(response, post):
     response.out.write('<b>' + post.subject + '</b><br>')
     response.out.write(post.content)
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
 
 
 def make_salt(length=5):
@@ -244,7 +244,8 @@ class EditPost(BlogHandler):
             return self.redirect('/login')
 
         if not p.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to edit someone else's post!")
+            msg = "You are not allowed to edit someone else's post!"
+            return self.render("error.html", msg=msg)
 
         self.render(
             "newpost.html",
@@ -264,7 +265,8 @@ class EditPost(BlogHandler):
             return self.redirect('/login')
 
         if not p.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to edit someone else's post!")
+            msg = "You are not allowed to edit someone else's post!"
+            return self.render("error.html", msg=msg)
 
         subject = self.request.get('subject')
         content = self.request.get('content')
@@ -298,7 +300,8 @@ class DeletePost(BlogHandler):
             return self.redirect('/login')
 
         if not p.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to delete someone else's post!")
+            msg = "You are not allowed to delete someone else's post!"
+            return self.render("error.html", msg=msg)
 
         for comment in p.comment_set:
             comment.delete()
@@ -316,7 +319,8 @@ class DeletePost(BlogHandler):
             return self.redirect('/login')
 
         if not p.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to delete someone else's post!")
+            msg = "You are not allowed to delete someone else's post!"
+            return self.render("error.html", msg=msg)
 
 # The class handling the page for creating a new comment---
 
@@ -365,7 +369,8 @@ class EditComment(BlogHandler):
             return self.redirect('/login')
 
         if not c.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to edit someone else's comment!")
+            msg = "You are not allowed to edit someone else's comment!"
+            return self.render("error.html", msg=msg)
 
         self.render("comment-form.html", content=c.content)
 
@@ -380,7 +385,8 @@ class EditComment(BlogHandler):
             return self.redirect('/login')
 
         if not c.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to edit someone else's comment!")
+            msg = "You are not allowed to edit someone else's comment!"
+            return self.render("error.html", msg=msg)
 
         content = self.request.get('content')
 
@@ -408,7 +414,8 @@ class DeleteComment(BlogHandler):
             return self.redirect('/login')
 
         if not c.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to delete someone else's comment!")
+            msg = "You are not allowed to delete someone else's comment!"
+            return self.render("error.html", msg=msg)
 
         post_id = str(c.post.key().id())
         c.delete()
@@ -425,7 +432,8 @@ class DeleteComment(BlogHandler):
             return self.redirect('/login')
 
         if not c.owner == self.username_str:
-            return self.render("error.html", msg="You are not allowed to delete someone else's comment!")
+            msg = "You are not allowed to delete someone else's comment!"
+            return self.render("error.html", msg=msg)
 
 # Class handling a like------------------------------------
 
@@ -494,7 +502,7 @@ class UnlikePost(BlogHandler):
 
         self.redirect('/blog/post/' + post_id)
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 
@@ -599,7 +607,7 @@ class Logout(BlogHandler):
         self.logout()
         self.redirect('/blog')
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
 
 app = webapp2.WSGIApplication([
     ('/', BlogFront),
