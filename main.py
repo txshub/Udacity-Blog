@@ -183,7 +183,7 @@ class NewPost(BlogHandler):
 
 	def post(self):
 		if not self.user:
-			self.redirect('/blog')
+			return self.redirect('/login')
 
 		subject = self.request.get('subject')
 		content = self.request.get('content')
@@ -204,22 +204,28 @@ class EditPost(BlogHandler):
         p = db.get(key)
 
         if not p:
-            self.error(404)
-            return
+            return self.error(404)
 
         if not self.user:
-            self.redirect('/login')
-            return
+            return self.redirect('/login')
 
         if not p.owner == self.username_str:
-            self.render("error.html", msg = "You are not allowed to edit someone else's post!")
-            return
+            return self.render("error.html", msg = "You are not allowed to edit someone else's post!")
 
-        self.render("newpost.html", subject = p.subject, content = p.content)
+        self.render("newpost.html", subject = p.subject, content = p.content, edit = True, post_id = post_id)
 
     def post(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         p = db.get(key)
+
+        if not p:
+            return self.error(404)
+
+        if not self.user:
+            return self.redirect('/login')
+
+        if not p.owner == self.username_str:
+            return self.render("error.html", msg = "You are not allowed to edit someone else's post!")
 
         subject = self.request.get('subject')
         content = self.request.get('content')
@@ -241,21 +247,31 @@ class DeletePost(BlogHandler):
         p = db.get(key)
 
         if not p:
-            self.error(404)
-            return
+            return self.error(404)
 
         if not self.user:
-            self.redirect('/login')
-            return
+            return self.redirect('/login')
 
         if not p.owner == self.username_str:
-            self.render("error.html", msg = "You are not allowed to delete someone else's post!")
-            return
+            return self.render("error.html", msg = "You are not allowed to delete someone else's post!")
 
         for comment in p.comment_set:
             comment.delete()
         p.delete()
         self.redirect('/blog/')
+
+    def post(self, post_id):
+        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+        p = db.get(key)
+
+        if not p:
+            return self.error(404)
+
+        if not self.user:
+            return self.redirect('/login')
+
+        if not p.owner == self.username_str:
+            return self.render("error.html", msg="You are not allowed to delete someone else's post!")
 
 # The class handling the page for creating a new comment---
 
@@ -271,8 +287,7 @@ class NewComment(BlogHandler):
         post = db.get(key)
 
         if not self.user:
-            self.redirect("/login")
-            return
+            return self.redirect("/login")
 
         content = self.request.get('content')
 
@@ -292,22 +307,28 @@ class EditComment(BlogHandler):
         c = db.get(key)
 
         if not c:
-            self.error(404)
-            return
+            return self.error(404)
 
         if not self.user:
-            self.redirect('/login')
-            return
+            return self.redirect('/login')
 
         if not c.owner == self.username_str:
-            self.render("error.html", msg = "You are not allowed to edit someone else's comment!")
-            return
+            return self.render("error.html", msg = "You are not allowed to edit someone else's comment!")
 
         self.render("comment-form.html", content = c.content)
 
     def post(self, comment_id):
         key = db.Key.from_path('Comment', int(comment_id))
         c = db.get(key)
+
+        if not c:
+            return self.error(404)
+
+        if not self.user:
+            return self.redirect('/login')
+
+        if not c.owner == self.username_str:
+            return self.render("error.html", msg = "You are not allowed to edit someone else's comment!")
 
         content = self.request.get('content')
 
@@ -327,20 +348,30 @@ class DeleteComment(BlogHandler):
         c = db.get(key)
 
         if not c:
-            self.error(404)
-            return
+            return self.error(404)
 
         if not self.user:
-            self.redirect('/login')
-            return
+            return self.redirect('/login')
 
         if not c.owner == self.username_str:
-            self.render("error.html", msg = "You are not allowed to delete someone else's comment!")
-            return
+            return self.render("error.html", msg = "You are not allowed to delete someone else's comment!")
 
         post_id = str(c.post.key().id())
         c.delete()
         self.redirect('/blog/post/' + post_id)
+
+    def post(self, comment_id):
+        key = db.Key.from_path('Comment', int(comment_id))
+        c = db.get(key)
+
+        if not c:
+            return self.error(404)
+
+        if not self.user:
+            return self.redirect('/login')
+
+        if not c.owner == self.username_str:
+            return self.render("error.html", msg="You are not allowed to delete someone else's comment!")
 
 # Class handling a like------------------------------------
 
@@ -494,12 +525,8 @@ class Logout(BlogHandler):
 
 #----------------------------------------------------------
 
-class MainPage(BlogHandler):
-    def get(self):
-		self.write('Hello, Udacity!')
-
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/', BlogFront),
     ('/blog/?', BlogFront),
     ('/blog/post/([0-9]+)', PostPage),
     ('/blog/editpost/([0-9]+)', EditPost),

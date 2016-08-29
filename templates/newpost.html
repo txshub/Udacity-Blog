@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>new/edit post</h2>
+    {% if edit %}
+        <h2>edit post</h2>
+    {% else %}
+        <h2>new post</h2>
+    {% endif %}
 
     <form method="post">
         <label>
@@ -18,4 +22,9 @@
 
         <input type="submit">
     </form>
+
+    {% if edit %}
+        <br>
+        <a href="/blog/post/{{ post_id }}" class = "add-comment">Cancel editing</a>
+    {% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 Udacity Blog
 
 The blog can be found at: http://udacity-blog-141420.appspot.com/blog
-It can also run locally with Google App Engine.
+It can also run locally with Google App Engine: create a new project via the GAE Launcher, move the files in the specific directory, and run it in the launcher.
 
 -------------------------------------------
 
